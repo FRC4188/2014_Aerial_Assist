@@ -10,6 +10,7 @@
 package team4188_2014.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import team4188_2014.Robot;
+import team4188_2014.RobotMap;
 /**
  *
  */
@@ -29,14 +30,22 @@ public class  ShootBall extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         if(!retracted) {
-            Robot.retriever.retractRetriever();
             Robot.shooter.retractShooter();
+            if(RobotMap.retrieverRetracted = false) Robot.retriever.retractRetriever();
+            
             retracted = true;
         }
         else if(retracted) {
-            Robot.retriever.deployRetriever();
-            Robot.shooter.deployShooter();
-            retracted = false;
+            Robot.shooter.deployShooterStageOne();
+            
+            if (!Robot.shooter.getStageOne()) Robot.shooter.deployShooterStageOne();
+            else{
+                if(!Robot.shooter.getGateLatch()) {retracted = true;}
+                else if (Robot.shooter.getGateLatch())  {
+                Robot.shooter.deployShooterStageTwo();
+                retracted = false;
+                }
+            }
         }
     }
     // Make this return true when this Command no longer needs to run execute()
