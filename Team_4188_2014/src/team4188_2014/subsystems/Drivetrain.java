@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.*;
 import team4188_2014.*;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import com.sun.squawk.util.MathUtils;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *
  */
@@ -33,16 +34,7 @@ public class Drivetrain extends Subsystem {
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-    public void init(){    
-        CorpsLog.log("Drivetrain",gyro.getAngle(), true, false);
-        CorpsLog.log("frontLeftEncoder", frontLeftEncoder.getDirection(), true, false);
-        CorpsLog.log("frontLeftEncoder", frontLeftEncoder.getDistance(), true, false);
-        CorpsLog.log("frontRightEncoder", frontRightEncoder.getDirection(), true, false);
-        CorpsLog.log("frontRightEncoder", frontRightEncoder.getDistance(), true, false);
-        CorpsLog.log("rearLeftEncoder", rearLeftEncoder.getDirection(), true, false);
-        CorpsLog.log("rearLeftEncoder", rearLeftEncoder.getDistance(), true, false);
-        CorpsLog.log("rearRightEncoder", rearRightEncoder.getDirection(), true, false);
-        CorpsLog.log("rearRightEncoder", rearRightEncoder.getDistance(), true, false);
+    public void init(){   
     }
     
     public void initDefaultCommand() {
@@ -71,4 +63,20 @@ public class Drivetrain extends Subsystem {
    {
       gyro.reset();
    }
+     
+     public void getEncoderValues(){
+        SmartDashboard.putDouble("Drivetrain",gyro.getAngle());
+        SmartDashboard.putDouble("frontLeftEncoder", frontLeftEncoder.getDistance());
+        SmartDashboard.putDouble("frontRightEncoder", frontRightEncoder.getDistance());
+        SmartDashboard.putDouble("rearLeftEncoder", rearLeftEncoder.getDistance());
+        SmartDashboard.putDouble("rearRightEncoder", rearRightEncoder.getDistance());
+     }
+     
+     public double getRightEncoder(){
+         return frontRightEncoder.getDistance();
+     }
+     
+     public double getLeftEncoder(){
+         return frontLeftEncoder.getDistance();
+     }
 }

@@ -39,6 +39,8 @@ public class  ManualDrive extends Command {
         else if(RobotMap.fieldOrientMode = true){
             Robot.drivetrain.driveFieldOriented(pilotStick.getX(), pilotStick.getY(), pilotStick.getTwist(), pilotStick.getThrottle());
         }
+        
+        Robot.drivetrain.getEncoderValues();
     }
     
     // Make this return true when this Command no longer needs to run execute()
