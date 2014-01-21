@@ -34,6 +34,7 @@ public class  AutoDrive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    if(Robot.drivetrain.getRightEncoder() < 1 || Robot.drivetrain.getLeftEncoder() < 1)
         Robot.drivetrain.driveAuto(0, 0.8, 0, 0);
     }
 
