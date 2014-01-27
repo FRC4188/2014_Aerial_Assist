@@ -18,11 +18,11 @@ public class CorpsLog {
     }
     public static void log(String title, double value, boolean dashboard, boolean console) {
         if(console && ENABLE_CONSOLE) System.out.println(title+": "+value);
-        if(dashboard && SMARTDASHBOARD) SmartDashboard.putDouble(title, value);
+        if(dashboard && SMARTDASHBOARD) SmartDashboard.putNumber(title, value);
     }
     public static void log(String title, int value, boolean dashboard, boolean console) {
         if(console && ENABLE_CONSOLE) System.out.println(title+": "+value);
-        if(dashboard && SMARTDASHBOARD) SmartDashboard.putInt(title, value);
+        if(dashboard && SMARTDASHBOARD) SmartDashboard.putNumber(title, value);
     }
     public static void log(String title, boolean value, boolean dashboard, boolean console) {
         if(console && ENABLE_CONSOLE) System.out.println(title+": "+value);

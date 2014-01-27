@@ -7,14 +7,13 @@ package team4188_2014.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import team4188_2014.Robot;
 import team4188_2014.RobotMap;
-
 /**
  *
  * @author Owner
  */
-public class ManipulateRetriever extends Command{
+public class RetrieverDoNothing extends Command {
     
-    public ManipulateRetriever() {
+    public RetrieverDoNothing() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         requires(Robot.retriever);
@@ -26,8 +25,7 @@ public class ManipulateRetriever extends Command{
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        if(Robot.retriever.isDeployed()) Robot.retriever.retractRetriever();
-        if(Robot.retriever.isRetracted()) Robot.retriever.deployRetriever();
+        Robot.retriever.doNothing();
     }
 
     // Make this return true when this Command no longer needs to run execute()
