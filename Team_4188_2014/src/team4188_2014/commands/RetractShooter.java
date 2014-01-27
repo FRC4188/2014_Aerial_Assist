@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package team4188_2014.commands;
+
 import edu.wpi.first.wpilibj.command.Command;
 import team4188_2014.Robot;
 import team4188_2014.RobotMap;
@@ -12,12 +13,12 @@ import team4188_2014.RobotMap;
  *
  * @author Owner
  */
-public class ManipulateRetriever extends Command{
+public class RetractShooter extends Command {
     
-    public ManipulateRetriever() {
+    public RetractShooter() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-        requires(Robot.retriever);
+        requires(Robot.shooter);
     }
 
     // Called just before this Command runs the first time
@@ -26,8 +27,7 @@ public class ManipulateRetriever extends Command{
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        if(Robot.retriever.isDeployed()) Robot.retriever.retractRetriever();
-        if(Robot.retriever.isRetracted()) Robot.retriever.deployRetriever();
+        Robot.shooter.retractShooter();
     }
 
     // Make this return true when this Command no longer needs to run execute()
