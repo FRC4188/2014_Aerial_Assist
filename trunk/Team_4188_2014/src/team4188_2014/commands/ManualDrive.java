@@ -11,6 +11,7 @@ package team4188_2014.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import team4188_2014.Robot;
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import team4188_2014.RobotMap;
 /**
  *
@@ -32,15 +33,16 @@ public class  ManualDrive extends Command {
     }
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        if(RobotMap.fieldOrientMode = false){
+//        if(RobotMap.fieldOrientMode = false){
             Robot.drivetrain.driveWithJoystick(pilotStick.getX(), pilotStick.getY(), pilotStick.getTwist(), pilotStick.getThrottle(), RobotMap.drivetraingyro.getAngle());
-        }
+//        }
         
-        else if(RobotMap.fieldOrientMode = true){
-            Robot.drivetrain.driveFieldOriented(pilotStick.getX(), pilotStick.getY(), pilotStick.getTwist(), pilotStick.getThrottle());
-        }
+//        else if(RobotMap.fieldOrientMode = true){
+//            Robot.drivetrain.driveFieldOriented(pilotStick.getX(), pilotStick.getY(), pilotStick.getTwist(), pilotStick.getThrottle());
+//        }
         
-        Robot.drivetrain.getEncoderValues();
+//        Robot.drivetrain.getEncoderValues();
+        SmartDashboard.putBoolean("Limit Switch", Robot.shooter.getGateLatch());
     }
     
     // Make this return true when this Command no longer needs to run execute()

@@ -56,10 +56,16 @@ public class Shooter extends Subsystem {
     }
     
     public void deployShooter(){   
+//        gateDoubleSolenoid.set(DoubleSolenoid.Value.kReverse);
+//        Timer.delay(GATE_DELAY_SECONDS);
+//        gateDoubleSolenoid.set(DoubleSolenoid.Value.kOff);        
+//        Timer.delay(GATE_DELAY_SECONDS);
         gateDoubleSolenoid.set(DoubleSolenoid.Value.kReverse);
         Timer.delay(GATE_DELAY_SECONDS);
-        gateDoubleSolenoid.set(DoubleSolenoid.Value.kOff);        
-        Timer.delay(GATE_DELAY_SECONDS);
+        gateDoubleSolenoid.set(DoubleSolenoid.Value.kOff);
+    }
+    
+    public void gateLatchReady(){
         gateDoubleSolenoid.set(DoubleSolenoid.Value.kForward);
         Timer.delay(GATE_DELAY_SECONDS);
         gateDoubleSolenoid.set(DoubleSolenoid.Value.kOff);
@@ -74,11 +80,11 @@ public class Shooter extends Subsystem {
     }
     
     public boolean isExtended(){
-        return !shooterOut.get();
+        return shooterOut.get();
     }
     
     public boolean isRetracted(){
-        return !shooterIn.get();
+        return shooterIn.get();
     }
         
 }

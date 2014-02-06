@@ -11,6 +11,8 @@
 
 package team4188_2014.commands;
 
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.command.Command;
 import team4188_2014.Robot;
 
@@ -34,13 +36,22 @@ public class  AutoDrive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-//    if(Robot.drivetrain.getRightEncoder() < 1 || Robot.drivetrain.getLeftEncoder() < 1)
-        Robot.drivetrain.driveAuto(0, 0.8, 0, 0);
+//        try {
+//            double initialRightEncoder = Robot.drivetrain.getRightEncoder();
+//            double initialLeftEncoder = Robot.drivetrain.getLeftEncoder();
+//            
+//            while((Robot.drivetrain.getRightEncoder()- initialRightEncoder)< 1 && (Robot.drivetrain.getLeftEncoder() - initialLeftEncoder) < 1)
+                Robot.drivetrain.driveAuto(0, 0.5, 0, 0);
+                Timer.delay(2.0);
+                Robot.drivetrain.driveAuto(0, 0, 0, 0);
+//        } catch (CANTimeoutException ex) {
+//            ex.printStackTrace();
+//        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     // Called once after isFinished returns true
