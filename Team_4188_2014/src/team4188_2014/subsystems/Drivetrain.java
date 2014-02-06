@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.*;
 import team4188_2014.*;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import com.sun.squawk.util.MathUtils;
+import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *
@@ -64,19 +65,22 @@ public class Drivetrain extends Subsystem {
       gyro.reset();
    }
      
-     public void getEncoderValues(){
-        SmartDashboard.putNumber("gyro",gyro.getAngle());
-//        SmartDashboard.putNumber("frontLeftEncoder", frontLeftEncoder.getDistance());
-//        SmartDashboard.putNumber("frontRightEncoder", frontRightEncoder.getDistance());
-//        SmartDashboard.putNumber("rearLeftEncoder", rearLeftEncoder.getDistance());
-//        SmartDashboard.putNumber("rearRightEncoder", rearRightEncoder.getDistance());
-     }
+//     public void getEncoderValues(){
+//        try {
+//            SmartDashboard.putNumber("gyro",gyro.getAngle());
+//            SmartDashboard.putNumber("frontLeftEncoder", frontRight.getPosition());
+//            SmartDashboard.putNumber("frontRightEncoder", frontLeft.getPosition());
+//        } catch (CANTimeoutException ex) {
+//            ex.printStackTrace();
+//        }
+//     }
      
-//     public double getRightEncoder(){
-//         return frontRightEncoder.getDistance();
+
+//     public double getRightEncoder() throws CANTimeoutException{
+//         return frontRight.getPosition();
 //     }
 //     
-//     public double getLeftEncoder(){
-//         return frontLeftEncoder.getDistance();
-//     }
-}
+//     public double getLeftEncoder() throws CANTimeoutException{
+//         return frontLeft.getPosition();
+     }
+

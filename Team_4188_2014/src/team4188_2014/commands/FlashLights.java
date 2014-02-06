@@ -9,17 +9,16 @@ import edu.wpi.first.wpilibj.command.Command;
 import team4188_2014.Robot;
 import team4188_2014.RobotMap;
 
-
 /**
  *
  * @author Owner
  */
-public class ReleaseShooterTension extends Command {
+public class FlashLights extends Command {
     
-    public ReleaseShooterTension() {
+    public FlashLights() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-        requires(Robot.shooter);
+        requires(Robot.vision);
     }
 
     // Called just before this Command runs the first time
@@ -28,7 +27,12 @@ public class ReleaseShooterTension extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        Robot.shooter.releaseTension();
+        if(Robot.vision.areLightsOn()){
+            Robot.vision.turnLightsOff();
+        }
+        else{
+            Robot.vision.turnLightsOn();
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
