@@ -45,25 +45,30 @@ public class Vision extends Subsystem {
     final double PI = 3.141592653;
 
     //Score limits used for target identification
-    final int  RECTANGULARITY_LIMIT = 60;
-    final int ASPECT_RATIO_LIMIT = 60;
+    final int  RECTANGULARITY_LIMIT = 50;
+    final int ASPECT_RATIO_LIMIT = 50;
 
     //Score limits used for hot target determination
-    final int TAPE_WIDTH_LIMIT = 60;
-    final int  VERTICAL_SCORE_LIMIT = 60;
-    final int LR_SCORE_LIMIT = 60;
+    final int TAPE_WIDTH_LIMIT = 50;
+    final int  VERTICAL_SCORE_LIMIT = 50;
+    final int LR_SCORE_LIMIT = 50;
 
     //Minimum area of particles to be considered
     final int AREA_MINIMUM = 150;
 
     //Maximum number of particles to process
     final int MAX_PARTICLES = 10;
+    ColorImage image;  
+    BinaryImage thresholdImage, filteredImage;
+            
     Relay Lights = RobotMap.cameraLights;
 
+//    NEWLY ADDED
+    ParticleAnalysisReport[] reports = null;
     AxisCamera camera;          // the axis camera object (connected to the switch)
     CriteriaCollection cc;      // the criteria for doing the particle filter operation
 
-    protected void initDefaultCommand() {}
+    public void initDefaultCommand() {}
     
     public class Scores {
         double rectangularity;
@@ -84,9 +89,13 @@ public class Vision extends Subsystem {
     
     public void init() {
         Lights.set(Relay.Value.kOff);
+        
         SmartDashboard.putString("Vision", "Initializing Vision");
+        
+        //try initializing in RobotMap if this doesn't work
         camera = AxisCamera.getInstance();  // get an instance of the camera
         SmartDashboard.putString("Vision", "Vision Initialized" + camera);
+        
         cc = new CriteriaCollection();      // create the criteria for the particle filter
         cc.addCriteria(MeasurementType.IMAQ_MT_AREA, AREA_MINIMUM, 65535, false);
     }
@@ -117,11 +126,10 @@ public class Vision extends Subsystem {
                  * level directory in the flash memory on the cRIO. The file name in this case is "testImage.jpg"
                  * 
                  */
-                ColorImage image;                           // next 2 lines read image from flash on cRIO
                 image = camera.getImage();     // comment if using stored images
-                BinaryImage thresholdImage = image.thresholdHSV(105, 137, 230, 255, 100, 183);   // keep only green objects
+                thresholdImage = image.thresholdHSV(105, 137, 230, 255, 100, 183);   // keep only green objects
                 //thresholdImage.write("/threshold.bmp");
-                BinaryImage filteredImage = thresholdImage.particleFilter(cc);           // filter out small particles
+                filteredImage = thresholdImage.particleFilter(cc);           // filter out small particles
                 //filteredImage.write("/filteredImage.bmp");
                 
                 //iterate through each particle and score to see if it is a target
@@ -142,16 +150,16 @@ public class Vision extends Subsystem {
 			//Check if the particle is a horizontal target, if not, check if it's a vertical target
 			if(scoreCompare(scores[i], false))
 			{
-                            SmartDashboard.putString("Vision", "particle: " + i + "is a Horizontal Target centerX: " + report.center_mass_x + "centerY: " + report.center_mass_y);
+                            System.out.println("particle: " + i + "is a Horizontal Target centerX: " + report.center_mass_x + "centerY: " + report.center_mass_y);
                             horizontalTargets[horizontalTargetCount++] = i; //Add particle to target array and increment count
 			} else if (scoreCompare(scores[i], true)) {
-                            SmartDashboard.putString("Vision", "particle: " + i + "is a Vertical Target centerX: " + report.center_mass_x + "centerY: " + report.center_mass_y);
+                            System.out.println("particle: " + i + "is a Vertical Target centerX: " + report.center_mass_x + "centerY: " + report.center_mass_y);
                             verticalTargets[verticalTargetCount++] = i;  //Add particle to target array and increment count
 			} else {
-                            SmartDashboard.putString("Vision", "particle: " + i + "is not a Target centerX: " + report.center_mass_x + "centerY: " + report.center_mass_y);
+                            System.out.println("particle: " + i + "is not a Target centerX: " + report.center_mass_x + "centerY: " + report.center_mass_y);
 			}
-                            SmartDashboard.putString("Vision", "rect: " + scores[i].rectangularity + "ARHoriz: " + scores[i].aspectRatioHorizontal);
-                            SmartDashboard.putString("Vision", "ARVert: " + scores[i].aspectRatioVertical);	
+                            System.out.println("rect: " + scores[i].rectangularity + "ARHoriz: " + scores[i].aspectRatioHorizontal);
+                            System.out.println("ARVert: " + scores[i].aspectRatioVertical);	
 			}
 
 			//Zero out scores and set verticalIndex to first target in case there are no horizontal targets
@@ -295,7 +303,7 @@ public class Vision extends Subsystem {
      * 
      * @return True if the particle meets all limits, false otherwise
      */
-    boolean scoreCompare(Scores scores, boolean vertical){
+    public boolean scoreCompare(Scores scores, boolean vertical){
 	boolean isTarget = true;
 
 	isTarget &= scores.rectangularity > RECTANGULARITY_LIMIT;
@@ -315,7 +323,7 @@ public class Vision extends Subsystem {
      * @param report The Particle Analysis Report for the particle to score
      * @return The rectangularity score (0-100)
      */
-    double scoreRectangularity(ParticleAnalysisReport report){
+    public double scoreRectangularity(ParticleAnalysisReport report){
             if(report.boundingRectWidth*report.boundingRectHeight !=0){
                     return 100*report.particleArea/(report.boundingRectWidth*report.boundingRectHeight);
             } else {
@@ -327,7 +335,7 @@ public class Vision extends Subsystem {
 	 * Converts a ratio with ideal value of 1 to a score. The resulting function is piecewise
 	 * linear going from (0,0) to (1,100) to (2,0) and is 0 for all inputs outside the range 0-2
 	 */
-	double ratioToScore(double ratio)
+    public double ratioToScore(double ratio)
 	{
 		return (Math.max(0, Math.min(100*(1-Math.abs(1-ratio)), 100)));
 	}
@@ -338,7 +346,7 @@ public class Vision extends Subsystem {
 	 * 
 	 * Returns True if the target is hot. False if it is not.
 	 */
-	boolean hotOrNot(TargetReport target)
+    public boolean hotOrNot(TargetReport target)
 	{
 		boolean isHot = true;
 		

@@ -33,15 +33,15 @@ public class  ManualDrive extends Command {
     }
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-//        if(RobotMap.fieldOrientMode = false){
+        if(!RobotMap.fieldOrientMode){
+            Robot.drivetrain.driveWithJoystick(pilotStick.getX(), pilotStick.getY(), pilotStick.getTwist(), pilotStick.getThrottle(), 0);
+        }
+        
+        else {
             Robot.drivetrain.driveWithJoystick(pilotStick.getX(), pilotStick.getY(), pilotStick.getTwist(), pilotStick.getThrottle(), RobotMap.drivetraingyro.getAngle());
-//        }
+        }
         
-//        else if(RobotMap.fieldOrientMode = true){
-//            Robot.drivetrain.driveFieldOriented(pilotStick.getX(), pilotStick.getY(), pilotStick.getTwist(), pilotStick.getThrottle());
-//        }
-        
-//        Robot.drivetrain.getEncoderValues();
+        Robot.drivetrain.getEncoderValues();
         SmartDashboard.putBoolean("Limit Switch", Robot.shooter.getGateLatch());
     }
     

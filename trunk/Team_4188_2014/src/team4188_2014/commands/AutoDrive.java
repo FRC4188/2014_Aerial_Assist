@@ -15,11 +15,13 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.command.Command;
 import team4188_2014.Robot;
+import team4188_2014.RobotMap;
 
 /**
  *
  */
 public class  AutoDrive extends Command {
+    private boolean doneYet;
 
     public AutoDrive() {
         // Use requires() here to declare subsystem dependencies
@@ -32,25 +34,32 @@ public class  AutoDrive extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+        Robot.drivetrain.resetEncoders();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-//        try {
-//            double initialRightEncoder = Robot.drivetrain.getRightEncoder();
-//            double initialLeftEncoder = Robot.drivetrain.getLeftEncoder();
-//            
-//            while((Robot.drivetrain.getRightEncoder()- initialRightEncoder)< 1 && (Robot.drivetrain.getLeftEncoder() - initialLeftEncoder) < 1)
-                Robot.drivetrain.driveAuto(0, 0.5, 0, 0);
-                Timer.delay(2.0);
-                Robot.drivetrain.driveAuto(0, 0, 0, 0);
-//        } catch (CANTimeoutException ex) {
-//            ex.printStackTrace();
-//        }
+            Robot.drivetrain.driveAuto(0, 0.3, 0, 0);
+            Timer.delay(2.0);
+            Robot.drivetrain.driveAuto(0, 0, 0, 0);
+        
+            
+//            if(Robot.drivetrain.getEncoderDistance(RobotMap.drivetrainfrontLeftEncoder) < 181.2 || 
+//                    Robot.drivetrain.getEncoderDistance(RobotMap.drivetrainfrontRightEncoder) < 181.2) Robot.drivetrain.driveAuto(0, 0.3, 0, 0);
+//            if(Robot.drivetrain.getEncoderDistance(RobotMap.drivetrainfrontLeftEncoder) < 271.85 || 
+//                    Robot.drivetrain.getEncoderDistance(RobotMap.drivetrainfrontRightEncoder) < 271.85) Robot.drivetrain.driveAuto(0, 0.2, 0, 0);
+//            if(Robot.drivetrain.getEncoderDistance(RobotMap.drivetrainfrontLeftEncoder) < 362.5 || 
+//                    Robot.drivetrain.getEncoderDistance(RobotMap.drivetrainfrontRightEncoder) < 362.5) Robot.drivetrain.driveAuto(0, 0.1, 0, 0);
+//            if(Robot.drivetrain.getEncoderDistance(RobotMap.drivetrainfrontLeftEncoder) >= 362.5 || 
+//                    Robot.drivetrain.getEncoderDistance(RobotMap.drivetrainfrontRightEncoder) >= 362.5){
+//                      Robot.drivetrain.driveAuto(0, 0, 0, 0); 
+//                      doneYet = true;
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+//        return doneYet;
+        
         return true;
     }
 
