@@ -37,7 +37,5 @@ public class Autonomous extends CommandGroup {
         addSequential(new Wait(0.1));
         addSequential(new AutoDrive());
         addSequential(new RecognizeTarget());
-        addSequential(new Wait(3.0));
-        addSequential(new RecognizeTarget());
     }
 }

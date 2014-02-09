@@ -59,6 +59,21 @@ public class RobotMap {
         Compressor = new Compressor(1, 9, 1, 3);
 	
         try { 
+            drivetrainfrontLeft = new CANJaguar(11);
+        } catch (CANTimeoutException ex) {
+            ex.printStackTrace();
+        }
+	   
+        
+        try { 
+            drivetrainrearLeft = new CANJaguar(14);
+        } catch (CANTimeoutException ex) {
+            ex.printStackTrace();
+        }
+	
+        
+        
+        try { 
             drivetrainfrontRight = new CANJaguar(15);
         } catch (CANTimeoutException ex) {
             ex.printStackTrace();
@@ -71,21 +86,7 @@ public class RobotMap {
             ex.printStackTrace();
         }
 	
-        try { 
-            drivetrainfrontLeft = new CANJaguar(11);
-        } catch (CANTimeoutException ex) {
-            ex.printStackTrace();
-        }
-	    
-        
-        try { 
-            drivetrainrearLeft = new CANJaguar(14);
-        } catch (CANTimeoutException ex) {
-            ex.printStackTrace();
-        }
-	
-        
-        
+      
         drivetrainRobotDrive = new RobotDrive(drivetrainfrontLeft, drivetrainrearLeft,
               drivetrainfrontRight, drivetrainrearRight);
 	
@@ -98,16 +99,16 @@ public class RobotMap {
         drivetraingyro = new Gyro(1, 1);
 	LiveWindow.addSensor("Drivetrain", "gyro", drivetraingyro);
         drivetraingyro.setSensitivity(0.007);
-//        drivetrainfrontLeftEncoder = new Encoder(1, 2, 1, 3, false, EncodingType.k4X);
-//	LiveWindow.addSensor("Drivetrain", "frontLeftEncoder", drivetrainfrontLeftEncoder);
-//        drivetrainfrontLeftEncoder.setDistancePerPulse(1.0);
-//        drivetrainfrontLeftEncoder.setPIDSourceParameter(PIDSourceParameter.kRate);
-//        drivetrainfrontLeftEncoder.start();
-//        drivetrainfrontRightEncoder = new Encoder(1, 4, 1, 5, true, EncodingType.k4X);
-//	LiveWindow.addSensor("Drivetrain", "frontRightEncoder", drivetrainfrontRightEncoder);
-//        drivetrainfrontRightEncoder.setDistancePerPulse(1.0);
-//        drivetrainfrontRightEncoder.setPIDSourceParameter(PIDSourceParameter.kRate);
-//        drivetrainfrontRightEncoder.start();
+        drivetrainfrontLeftEncoder = new Encoder(1, 5, 1, 6, false, EncodingType.k4X);
+	LiveWindow.addSensor("Drivetrain", "frontLeftEncoder", drivetrainfrontLeftEncoder);
+        drivetrainfrontLeftEncoder.setDistancePerPulse(1.0);
+        drivetrainfrontLeftEncoder.setPIDSourceParameter(PIDSourceParameter.kRate);
+        drivetrainfrontLeftEncoder.start();
+        drivetrainfrontRightEncoder = new Encoder(1, 7, 1, 8, true, EncodingType.k4X);
+	LiveWindow.addSensor("Drivetrain", "frontRightEncoder", drivetrainfrontRightEncoder);
+        drivetrainfrontRightEncoder.setDistancePerPulse(1.0);
+        drivetrainfrontRightEncoder.setPIDSourceParameter(PIDSourceParameter.kRate);
+        drivetrainfrontRightEncoder.start();
 //        drivetrainrearLeftEncoder = new Encoder(1, 6, 1, 7, false, EncodingType.k4X);
 //	LiveWindow.addSensor("Drivetrain", "rearLeftEncoder", drivetrainrearLeftEncoder);
 //        drivetrainrearLeftEncoder.setDistancePerPulse(1.0);
