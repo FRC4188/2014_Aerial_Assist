@@ -21,7 +21,9 @@ import team4188_2014.RobotMap;
  *
  */
 public class  AutoDrive extends Command {
-    private boolean doneYet;
+    private boolean doneYet = false;
+    private Timer timer;
+    private double TIME_FINAL = 1.5;
 
     public AutoDrive() {
         // Use requires() here to declare subsystem dependencies
@@ -34,15 +36,20 @@ public class  AutoDrive extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        Robot.drivetrain.resetEncoders();
+        timer = new Timer();
+        timer.start();
+//        Robot.drivetrain.resetEncoders();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-            Robot.drivetrain.driveAuto(0, 0.3, 0, 0);
-            Timer.delay(2.0);
+        if(timer.get() <= TIME_FINAL) Robot.drivetrain.driveAuto(0, -0.3, 0, 0);
+        else {
             Robot.drivetrain.driveAuto(0, 0, 0, 0);
-        
+            timer.stop();
+            doneYet = true;
+        }
+            
             
 //            if(Robot.drivetrain.getEncoderDistance(RobotMap.drivetrainfrontLeftEncoder) < 181.2 || 
 //                    Robot.drivetrain.getEncoderDistance(RobotMap.drivetrainfrontRightEncoder) < 181.2) Robot.drivetrain.driveAuto(0, 0.3, 0, 0);
@@ -58,13 +65,14 @@ public class  AutoDrive extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-//        return doneYet;
+        return doneYet;
         
-        return true;
+//        return true;
     }
 
     // Called once after isFinished returns true
     protected void end() {
+        doneYet = false;
     }
 
     // Called when another command which requires one or more of the same

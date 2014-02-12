@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package team4188_2014.commands;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import team4188_2014.Robot;
 import team4188_2014.RobotMap;
@@ -13,7 +14,10 @@ import team4188_2014.RobotMap;
  * @author Owner
  */
 public class RetrieverIn extends Command{
-    
+    private boolean doneYet = false;
+    private Timer timer;
+    private double TIME_FINAL = 2.5;
+
     public RetrieverIn() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -22,20 +26,26 @@ public class RetrieverIn extends Command{
 
     // Called just before this Command runs the first time
     protected void initialize() {
+        timer = new Timer();
+        timer.start();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        if(Robot.retriever.isDeployed())        {
-            Robot.retriever.retractRetriever();
-//            Robot.retriever.displayValues();
-        }
-        
+            if(Robot.retriever.isDeployed()) Robot.retriever.retractRetriever();
+            else Robot.retriever.doNothing();
+            
+            if(timer.get() < TIME_FINAL)
+                Robot.retriever.retrieve();      
+            else {
+                timer.stop();
+                doneYet = true;
+            }
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return doneYet;
     }
 
     // Called once after isFinished returns true
@@ -46,4 +56,5 @@ public class RetrieverIn extends Command{
     // subsystems is scheduled to run
     protected void interrupted() {
     }
+
 }

@@ -27,11 +27,11 @@ public class RetrieverOut extends Command{
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
           
-        if(Robot.retriever.isRetracted())         {
+//        if(Robot.retriever.isRetracted())         {
       
             Robot.retriever.deployRetriever();
 //            Robot.retriever.displayValues();
-        }
+//        }
         
     }
 

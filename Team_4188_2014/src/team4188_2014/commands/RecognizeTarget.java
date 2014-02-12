@@ -19,6 +19,16 @@ import team4188_2014.RobotMap;
  * @author Owner
  */
 public class RecognizeTarget extends Command {
+    private boolean deployed = false;
+    private boolean doneYet1 = false;
+    private boolean doneYet2 = false;
+    private boolean doneYet3 = false;
+    private Timer timer;
+    private final double TIME_1 = 1.0;
+    private final double TIME_2 = 6.0;
+    private final double TIME_3 = 7.1;
+    private final double TIME_4 = 8.2;
+    
     boolean cameradoneYet = false;
     int i = 1;
     
@@ -30,7 +40,8 @@ public class RecognizeTarget extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        
+        timer = new Timer();
+        timer.start(); 
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -44,35 +55,67 @@ public class RecognizeTarget extends Command {
         }
         
         else{
-//                Robot.drivetrain.driveAuto(0, 0.2, 0, 0);
-//                Timer.delay(1.0);
-//                Robot.drivetrain.driveAuto(0, 0, 0, 0);
-//                
-                SmartDashboard.putBoolean("Gate Latch Autonomous", Robot.shooter.getGateLatch());
-                
-                CorpsLog.log("Autonomous", "Shooting...", false, true);
-                Robot.shooter.deployShooter();
-                    
-                if(Robot.shooter.getGateLatch()) {
-                    CorpsLog.log("Autonomous", "Retracting Shooter...", false, true);
-                    Robot.shooter.retractShooter();
-                    Timer.delay(3.0);
+            //Step 1: Deploy the Retriever to get it out of the way if it is not already deployed.
+            if(Robot.retriever.isRetracted()) Robot.retriever.deployRetriever();
+            else Robot.retriever.doNothing();
+
+            //Step 2A: Deploy the Shooter and reset if the limit switch is clicked and the tension has been released.
+            if((!Robot.shooter.getGateLatch() && Robot.shooter.isExtended()) || deployed){
+                //Step 3A: Deploy shooter if not already deployed.
+                if(!deployed) {
+                     CorpsLog.log("Teleop", "Shooting...", false, true);
+                     Robot.shooter.deployShooter();
+                     deployed = true;
                 }
 
-                //if statement makes difficult for code to work unless perfect timing. while ensures no action until limit switch hit
-                //while may block other code...? test to see if escape is possible by hitting copilot buttons for shooter
-                if(!Robot.shooter.getGateLatch()) {
-                    CorpsLog.log("Autonomous", "Setting Gate Latch...", false, true);
-                    Robot.shooter.gateLatchReady();
-                    Timer.delay(1.0);
-                    CorpsLog.log("Autonomous", "Releasing Shooter Tension...", false, true);
-                    Robot.shooter.releaseTension();
-                    Timer.delay(1.0);
+                //Step 3B: If shooter is already deployed, begin reset.
+                else{
+                    CorpsLog.log("Teleop", "Resetting Shooter...", false, true);
+
+                    //Step 4: If 1 second has passed and shooter has not been retracted, retract shooter.
+                    if(timer.get() >= TIME_1 && timer.get() < TIME_2 && !doneYet1){
+                        CorpsLog.log("Teleop", "Retracting Shooter...", false, true);
+                        Robot.shooter.retractShooter();
+                        doneYet1 = true;
+                    }          
+
+                    //Step 5: If 6 seconds have passed and the gate latch has not been locked, lock gate latch.
+                    else if(timer.get() >= TIME_2 && timer.get() < TIME_3 && !doneYet2){ 
+                        //Only set the gate latch if the limit switch is pressed.
+                        if(!Robot.shooter.getGateLatch()){
+                            CorpsLog.log("Teleop", "Setting Gate Latch...", false, true);
+                            Robot.shooter.gateLatchReady();
+                            doneYet2 = true;
+                        }
+                        else {
+                            CorpsLog.log("Teleop", "Limit switch not clicked... Cannot lock gate latch...", false, true);
+                            Robot.shooter.doNothing();
+                            //doneYet2 is still false.
+                        }
+                    }
+
+                    //Step 6: If 7 seconds has passed and tension has not been released, release shooter tension.
+                    else if(timer.get() >= TIME_3 && timer.get() <TIME_4 && !doneYet3){
+                        if(doneYet2){
+                            CorpsLog.log("Teleop", "Releasing Shooter Tension... Sequence finished... Exiting command 'ShootBall()'", false, true);
+                            Robot.shooter.releaseTension();
+                            doneYet3 = true;
+                        }
+                        else{
+                            Robot.shooter.doNothing();
+                            CorpsLog.log("Teleop", "Gate Latch unlocked... Cannot release tension... Exiting command 'ShootBall()'", false, true);
+                            doneYet1 = true;
+                            doneYet2 = true;
+                            doneYet3 = true;
+                        }
+                    }
+
+                    //In the event that none of these above 3 cases is true, wait.
+                    else Robot.shooter.doNothing();
                 }
-                    
-               
-                CorpsLog.log("Target ?= Hot", Robot.vision.targetRecognition(), false, true);
-                    
+            }    
+                
+        CorpsLog.log("Target ?= Hot", Robot.vision.targetRecognition(), false, true);         
         Robot.vision.turnLightsOff();
         cameradoneYet = true;
         }
@@ -80,7 +123,7 @@ public class RecognizeTarget extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return cameradoneYet;
+        return cameradoneYet && doneYet1 && doneYet2 && doneYet3;
     }
 
     // Called once after isFinished returns true
