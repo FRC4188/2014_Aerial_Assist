@@ -18,6 +18,7 @@ import team4188_2014.RobotMap;
  */
 public class  ManualDrive extends Command {
     Joystick pilotStick = Robot.oi.pilotJoystick;
+    private boolean in = false;
     public ManualDrive() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -34,15 +35,30 @@ public class  ManualDrive extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         if(!RobotMap.fieldOrientMode){
-            Robot.drivetrain.driveWithJoystick(pilotStick.getX(), pilotStick.getY(), pilotStick.getTwist(), pilotStick.getThrottle(), 0);
+            Robot.drivetrain.driveWithJoystick(-pilotStick.getX(), -pilotStick.getY(), pilotStick.getTwist(), pilotStick.getThrottle(), 0);
         }
         
         else {
-            Robot.drivetrain.driveWithJoystick(pilotStick.getX(), pilotStick.getY(), pilotStick.getTwist(), pilotStick.getThrottle(), RobotMap.drivetraingyro.getAngle());
+            Robot.drivetrain.driveWithJoystick(-pilotStick.getX(), -pilotStick.getY(), pilotStick.getTwist(), pilotStick.getThrottle(), RobotMap.drivetraingyro.getAngle());
         }
         
+//        if(!Robot.shooter.getGateLatch() && in) {
+//            Robot.shooter.gateLatchReady();
+//            in = false;
+//        }
+//        
+//        if(Robot.shooter.getGateLatch() && !in){
+//            Robot.shooter.deployShooter();
+//            in = true;
+//        }
+//        
         Robot.drivetrain.getEncoderValues();
         SmartDashboard.putBoolean("Limit Switch", Robot.shooter.getGateLatch());
+        SmartDashboard.putBoolean("FieldOrient", RobotMap.fieldOrientMode);
+        SmartDashboard.putBoolean("Shooter In", Robot.shooter.isRetracted());
+        SmartDashboard.putBoolean("Shooter Out", Robot.shooter.isExtended());
+        SmartDashboard.putBoolean("Retriever In", Robot.retriever.isRetracted());
+        SmartDashboard.putBoolean("Retriever Out", Robot.retriever.isDeployed());
     }
     
     // Make this return true when this Command no longer needs to run execute()

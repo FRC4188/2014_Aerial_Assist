@@ -6,18 +6,22 @@
 package team4188_2014.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import team4188_2014.Robot;
+import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import team4188_2014.RobotMap;
-
 /**
  *
  * @author Owner
  */
-public class ManipulateRetriever extends Command{
+public class GoToSweetSpot extends Command {
     
-    public ManipulateRetriever() {
+    boolean doneYet = false;
+    double SWEET_SPOT = 12.0;
+    
+    public GoToSweetSpot() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-        requires(Robot.retriever);
+        requires(Robot.vision);
     }
 
     // Called just before this Command runs the first time
@@ -26,13 +30,22 @@ public class ManipulateRetriever extends Command{
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        if(Robot.retriever.isDeployed()) Robot.retriever.retractRetriever();
-        if(Robot.retriever.isRetracted()) Robot.retriever.deployRetriever();
+        Robot.vision.turnLightsOn();
+            if(Robot.vision.getDistance() < SWEET_SPOT){
+                Robot.drivetrain.driveAuto(0, -0.18, 0, 0);
+                doneYet = false;
+            }
+
+            else{
+                Robot.drivetrain.driveAuto(0, 0, 0, 0);
+                Robot.vision.turnLightsOff();
+                doneYet = true;
+            }
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     // Called once after isFinished returns true

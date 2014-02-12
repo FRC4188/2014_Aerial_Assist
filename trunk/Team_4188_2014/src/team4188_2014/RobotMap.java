@@ -49,6 +49,8 @@ public class RobotMap {
     public static DigitalInput shooterOut;
     public static DigitalInput shooterIn;
     public static DigitalInput shootergateLatch;
+    public static DigitalInput shootergateLatch2;
+    
     public static void init() {
         retrieverDoubleSolenoid = new DoubleSolenoid(1, 5, 6);  
         shootergateDoubleSolenoid = new DoubleSolenoid(1, 7, 8);
@@ -99,16 +101,16 @@ public class RobotMap {
         drivetraingyro = new Gyro(1, 1);
 	LiveWindow.addSensor("Drivetrain", "gyro", drivetraingyro);
         drivetraingyro.setSensitivity(0.007);
-        drivetrainfrontLeftEncoder = new Encoder(1, 5, 1, 6, false, EncodingType.k4X);
-	LiveWindow.addSensor("Drivetrain", "frontLeftEncoder", drivetrainfrontLeftEncoder);
-        drivetrainfrontLeftEncoder.setDistancePerPulse(1.0);
-        drivetrainfrontLeftEncoder.setPIDSourceParameter(PIDSourceParameter.kRate);
-        drivetrainfrontLeftEncoder.start();
-        drivetrainfrontRightEncoder = new Encoder(1, 7, 1, 8, true, EncodingType.k4X);
-	LiveWindow.addSensor("Drivetrain", "frontRightEncoder", drivetrainfrontRightEncoder);
-        drivetrainfrontRightEncoder.setDistancePerPulse(1.0);
-        drivetrainfrontRightEncoder.setPIDSourceParameter(PIDSourceParameter.kRate);
-        drivetrainfrontRightEncoder.start();
+//        drivetrainfrontLeftEncoder = new Encoder(1, 5, 1, 6, false, EncodingType.k4X);
+//	LiveWindow.addSensor("Drivetrain", "frontLeftEncoder", drivetrainfrontLeftEncoder);
+//        drivetrainfrontLeftEncoder.setDistancePerPulse(1.0);
+//        drivetrainfrontLeftEncoder.setPIDSourceParameter(PIDSourceParameter.kRate);
+//        drivetrainfrontLeftEncoder.start();
+//        drivetrainfrontRightEncoder = new Encoder(1, 7, 1, 8, true, EncodingType.k4X);
+//	LiveWindow.addSensor("Drivetrain", "frontRightEncoder", drivetrainfrontRightEncoder);
+//        drivetrainfrontRightEncoder.setDistancePerPulse(1.0);
+//        drivetrainfrontRightEncoder.setPIDSourceParameter(PIDSourceParameter.kRate);
+//        drivetrainfrontRightEncoder.start();
 //        drivetrainrearLeftEncoder = new Encoder(1, 6, 1, 7, false, EncodingType.k4X);
 //	LiveWindow.addSensor("Drivetrain", "rearLeftEncoder", drivetrainrearLeftEncoder);
 //        drivetrainrearLeftEncoder.setDistancePerPulse(1.0);
@@ -123,6 +125,7 @@ public class RobotMap {
         retrieverRelay = new Relay(1,1);
         cameraLights = new Relay(1,2);
         shootergateLatch = new DigitalInput(1, 10);
+//        shootergateLatch2 = new DigitalInput(1,8);
         retrieverOut = new DigitalInput(1, 11);
         retrieverIn = new DigitalInput(1, 12);
         shooterOut = new DigitalInput(1, 13);

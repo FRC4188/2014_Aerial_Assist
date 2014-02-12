@@ -14,6 +14,7 @@ import team4188_2014.RobotMap;
  * @author Owner
  */
 public class GateLatchReady extends Command {
+    private boolean out = false;
     
     public GateLatchReady() {
         // Use requires() here to declare subsystem dependencies
@@ -27,7 +28,16 @@ public class GateLatchReady extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        Robot.shooter.gateLatchReady();
+        if(!out){
+            Robot.shooter.gateLatchReady();
+            out = true;
+        }
+        
+        else{
+            Robot.shooter.deployShooter();
+            out = false;
+        }
+        
     }
 
     // Make this return true when this Command no longer needs to run execute()

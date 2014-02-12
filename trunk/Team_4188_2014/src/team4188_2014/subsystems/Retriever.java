@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.Timer;
 import team4188_2014.RobotMap;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import team4188_2014.Robot;
 import team4188_2014.commands.RetrieverDoNothing;
 /**
  *
@@ -25,6 +26,9 @@ import team4188_2014.commands.RetrieverDoNothing;
 public class Retriever extends Subsystem {
     private static final double PNEUMATIC_DELAY_SECONDS = 0.5;
     private static final double MAX_VOLT_RETRIEVER = 5.0;
+    private static final int LOOP_MAX = 100;
+    private static int RETRIEVER_STATE = 1;
+    private static int LOOP_COUNT = 0;
     
     Compressor compressor = RobotMap.Compressor;
     DoubleSolenoid retrieverDoubleSolenoid = RobotMap.retrieverDoubleSolenoid;
@@ -62,7 +66,7 @@ public class Retriever extends Subsystem {
     public void eject(){
         retrieverSpike.set(Relay.Value.kReverse);
     }
-    
+   
     public void retractRetriever(){
         retrieverDoubleSolenoid.set(DoubleSolenoid.Value.kForward);    
         Timer.delay(PNEUMATIC_DELAY_SECONDS);
@@ -80,11 +84,11 @@ public class Retriever extends Subsystem {
     }
     
     public boolean isDeployed(){
-        return retrieverOut.get();
+        return !retrieverOut.get();
     }
     
     public boolean isRetracted(){
-        return retrieverIn.get();
+        return !retrieverIn.get();
     }
     
     public void displayValues(){
@@ -92,5 +96,13 @@ public class Retriever extends Subsystem {
         SmartDashboard.putBoolean("retrieverOut", retrieverOut.get());
     }
          
-    
+    public void delay(){
+        switch(RETRIEVER_STATE){
+            case 1: LOOP_COUNT = 0;
+                RETRIEVER_STATE = 2;
+            case 2: 
+                if(LOOP_COUNT >= 100) retrieverSpike.set(Relay.Value.kForward);
+                else LOOP_COUNT++;
+        }
+    }
 }
