@@ -42,16 +42,6 @@ public class  ManualDrive extends Command {
             Robot.drivetrain.driveWithJoystick(-pilotStick.getX(), -pilotStick.getY(), pilotStick.getTwist(), pilotStick.getThrottle(), RobotMap.drivetraingyro.getAngle());
         }
         
-//        if(!Robot.shooter.getGateLatch() && in) {
-//            Robot.shooter.gateLatchReady();
-//            in = false;
-//        }
-//        
-//        if(Robot.shooter.getGateLatch() && !in){
-//            Robot.shooter.deployShooter();
-//            in = true;
-//        }
-//        
         Robot.drivetrain.getEncoderValues();
         SmartDashboard.putBoolean("Limit Switch", Robot.shooter.getGateLatch());
         SmartDashboard.putBoolean("FieldOrient", RobotMap.fieldOrientMode);
