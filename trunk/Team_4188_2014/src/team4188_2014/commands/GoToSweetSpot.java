@@ -16,7 +16,8 @@ import team4188_2014.RobotMap;
 public class GoToSweetSpot extends Command {
     
     boolean doneYet = false;
-    double SWEET_SPOT = 12.0;
+    final double SWEET_SPOT = 12.0;
+    final double TOLERANCE = 0.5;
     
     public GoToSweetSpot() {
         // Use requires() here to declare subsystem dependencies
@@ -31,25 +32,33 @@ public class GoToSweetSpot extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         Robot.vision.turnLightsOn();
-            if(Robot.vision.getDistance() < SWEET_SPOT){
+            if(Robot.vision.getDistance() < SWEET_SPOT - TOLERANCE){
                 Robot.drivetrain.driveAuto(0, -0.18, 0, 0);
+                doneYet = false;
+            }
+            
+            else if(Robot.vision.getDistance() > SWEET_SPOT + TOLERANCE){
+                Robot.drivetrain.driveAuto(0, 0.18, 0, 0);
                 doneYet = false;
             }
 
             else{
                 Robot.drivetrain.driveAuto(0, 0, 0, 0);
                 Robot.vision.turnLightsOff();
+                Robot.drivetrain.turnOnLEDs();
                 doneYet = true;
             }
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return doneYet;
     }
 
     // Called once after isFinished returns true
     protected void end() {
+        Robot.vision.turnLightsOff();
+        doneYet = false;
     }
 
     // Called when another command which requires one or more of the same

@@ -14,7 +14,7 @@ import team4188_2014.RobotMap;
  * @author Owner
  */
 public class GateLatchReady extends Command {
-    private boolean out = false;
+    private boolean out = true;
     
     public GateLatchReady() {
         // Use requires() here to declare subsystem dependencies
