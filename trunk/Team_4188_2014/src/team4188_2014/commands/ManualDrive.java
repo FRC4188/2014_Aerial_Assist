@@ -34,12 +34,14 @@ public class  ManualDrive extends Command {
     }
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        //drive with shooter forward
         if(!RobotMap.fieldOrientMode){
             Robot.drivetrain.driveWithJoystick(-pilotStick.getX(), -pilotStick.getY(), pilotStick.getTwist(), pilotStick.getThrottle(), 0);
         }
         
+        //lol field orient. actually drives with retriever forward
         else {
-            Robot.drivetrain.driveWithJoystick(-pilotStick.getX(), -pilotStick.getY(), pilotStick.getTwist(), pilotStick.getThrottle(), RobotMap.drivetraingyro.getAngle());
+            Robot.drivetrain.driveWithJoystick(pilotStick.getX(), pilotStick.getY(), pilotStick.getTwist(), pilotStick.getThrottle(), 0);
         }
         
         Robot.drivetrain.getEncoderValues();
