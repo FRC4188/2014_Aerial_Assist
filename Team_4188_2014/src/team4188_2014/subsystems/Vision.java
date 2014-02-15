@@ -59,8 +59,6 @@ public class Vision extends Subsystem {
 
     //Maximum number of particles to process
     final int MAX_PARTICLES = 10;
-    ColorImage image;  
-    BinaryImage thresholdImage, filteredImage;
             
     Relay Lights = RobotMap.cameraLights;
 
@@ -127,8 +125,11 @@ public class Vision extends Subsystem {
                  * level directory in the flash memory on the cRIO. The file name in this case is "testImage.jpg"
                  * 
                  */
+                ColorImage image;  
+                BinaryImage thresholdImage, filteredImage;
                 image = camera.getImage();     // comment if using stored images
-                thresholdImage = image.thresholdHSV(105, 137, 230, 255, 100, 183);   // keep only green objects
+                //DO NOT CHANGE THESE VALUES BELOW. 
+                thresholdImage = image.thresholdHSV(105, 137, 230, 255, 73, 183);   // keep only green objects 
                 //thresholdImage.write("/threshold.bmp");
                 filteredImage = thresholdImage.particleFilter(cc);           // filter out small particles
                 //filteredImage.write("/filteredImage.bmp");
@@ -231,6 +232,8 @@ public class Vision extends Subsystem {
 	int verticalTargetCount, horizontalTargetCount;
         
         try {
+                ColorImage image;  
+                BinaryImage thresholdImage, filteredImage;
                 image = camera.getImage();     // comment if using stored images
                 thresholdImage = image.thresholdHSV(105, 137, 230, 255, 100, 183);   // keep only green objects
                 //thresholdImage.write("/threshold.bmp");
@@ -255,16 +258,16 @@ public class Vision extends Subsystem {
 			//Check if the particle is a horizontal target, if not, check if it's a vertical target
 			if(scoreCompare(scores[i], false))
 			{
-                            System.out.println("particle: " + i + "is a Horizontal Target centerX: " + report.center_mass_x + "centerY: " + report.center_mass_y);
+//                            System.out.println("particle: " + i + "is a Horizontal Target centerX: " + report.center_mass_x + "centerY: " + report.center_mass_y);
                             horizontalTargets[horizontalTargetCount++] = i; //Add particle to target array and increment count
 			} else if (scoreCompare(scores[i], true)) {
-                            System.out.println("particle: " + i + "is a Vertical Target centerX: " + report.center_mass_x + "centerY: " + report.center_mass_y);
+//                            System.out.println("particle: " + i + "is a Vertical Target centerX: " + report.center_mass_x + "centerY: " + report.center_mass_y);
                             verticalTargets[verticalTargetCount++] = i;  //Add particle to target array and increment count
 			} else {
-                            System.out.println("particle: " + i + "is not a Target centerX: " + report.center_mass_x + "centerY: " + report.center_mass_y);
+//                            System.out.println("particle: " + i + "is not a Target centerX: " + report.center_mass_x + "centerY: " + report.center_mass_y);
 			}
-                            System.out.println("rect: " + scores[i].rectangularity + "ARHoriz: " + scores[i].aspectRatioHorizontal);
-                            System.out.println("ARVert: " + scores[i].aspectRatioVertical);	
+//                            System.out.println("rect: " + scores[i].rectangularity + "ARHoriz: " + scores[i].aspectRatioHorizontal);
+//                            System.out.println("ARVert: " + scores[i].aspectRatioVertical);	
 			}
 
 			//Zero out scores and set verticalIndex to first target in case there are no horizontal targets
@@ -313,14 +316,10 @@ public class Vision extends Subsystem {
                 //horizontal or vertical index to get the particle report as shown below
                 ParticleAnalysisReport distanceReport = filteredImage.getParticleAnalysisReport(target.verticalIndex);
                 distance = computeDistance(filteredImage, distanceReport, target.verticalIndex);
+                System.out.println("You are " + distance + " feet away from the goal.");
 
                 }
 
-                /**
-                 * all images in Java must be freed after they are used since they are allocated out
-                 * of C data structures. Not calling free() will cause the memory to accumulate over
-                 * each pass of this loop.
-                 */
                 filteredImage.free();
                 thresholdImage.free();
                 image.free();

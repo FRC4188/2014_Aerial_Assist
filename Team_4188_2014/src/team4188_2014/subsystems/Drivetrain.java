@@ -28,6 +28,8 @@ public class Drivetrain extends Subsystem {
     CANJaguar rearRight = RobotMap.drivetrainrearRight;
     RobotDrive robotDrive = RobotMap.drivetrainRobotDrive;
     Gyro gyro = RobotMap.drivetraingyro;
+    Relay LED = RobotMap.LEDRelay;
+    boolean LEDsOn = false;
 //    private PIDController gyroPID, leftEncPID, rightEncPID;
 //    private static final double Pg = 0.1, Ig = 0.005, Dg = 0.0,     // LEAVE THESE CONSTANTS ALONE!
 //            Pe = 8.0, Ie = 0.01, De = 0.0,      // LEAVE THESE CONSTANTS ALONE!
@@ -85,6 +87,21 @@ public class Drivetrain extends Subsystem {
      public double getEncoderDistance(Encoder encoder){
          return encoder.getDistance();
      }
+     
+     public void turnOnLEDs(){
+        LED.set(Relay.Value.kForward);
+        LEDsOn = true;
+    }
+    
+    public void turnOffLEDs(){
+        LED.set(Relay.Value.kOff);
+        LEDsOn = false;
+    }
+    
+    public boolean areLEDsOn(){
+        return LEDsOn;
+    }
+   
 //     
 //     public void resetEncoders(){
 //         frontLeftEncoder.reset();
@@ -96,5 +113,6 @@ public class Drivetrain extends Subsystem {
 //     
 //     public double getLeftEncoder() throws CANTimeoutException{
 //         return frontLeft.getPosition();
+     
      }
 

@@ -126,6 +126,7 @@ public class  ShootBall extends Command{
        
        //Step 2C: If the Limit switch is not clicked at all, retract shooter and press trigger again.
        else {
+           Robot.shooter.deployShooter();
            CorpsLog.log("Teleop", "Limit Switch not clicked... Attempting retract shooter", false, true);
            Robot.shooter.retractShooter();
            CorpsLog.log("Teleop", "Wait for limit switch and press trigger again to lock gate latch and release tension...", false, true);
