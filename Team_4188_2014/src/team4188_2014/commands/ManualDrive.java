@@ -39,9 +39,8 @@ public class  ManualDrive extends Command {
             Robot.drivetrain.driveWithJoystick(-pilotStick.getX(), -pilotStick.getY(), pilotStick.getTwist(), pilotStick.getThrottle(), 0);
         }
         
-        //lol field orient. actually drives with retriever forward
         else {
-            Robot.drivetrain.driveWithJoystick(pilotStick.getX(), pilotStick.getY(), pilotStick.getTwist(), pilotStick.getThrottle(), 0);
+            Robot.drivetrain.driveWithJoystick(pilotStick.getX(), pilotStick.getY(), pilotStick.getTwist(), pilotStick.getThrottle(), RobotMap.drivetraingyro.getAngle());
         }
         
         Robot.drivetrain.getEncoderValues();
