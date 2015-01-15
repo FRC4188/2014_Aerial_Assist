@@ -28,6 +28,8 @@ public class Shooter extends Subsystem {
 //    DigitalInput gateLatch2 = RobotMap.shootergateLatch2;
     DigitalInput shooterOut = RobotMap.shooterOut;
     DigitalInput shooterIn = RobotMap.shooterIn;
+    DigitalInput gateLatchOut = RobotMap.gateLatchOut;
+    DigitalInput gateLatchIn = RobotMap.gateLatchIn;
     
     
     // Put methods for controlling this subsystem
@@ -44,18 +46,18 @@ public class Shooter extends Subsystem {
     public void init(){
         compressor.start();
                 
-        if(Robot.shooter.getGateLatch()) Robot.shooter.deployShooter();
-        if(!Robot.shooter.getGateLatch()) Robot.shooter.gateLatchReady();
+       // if(Robot.shooter.getGateLatch()) Robot.shooter.deployShooter();
+       // if(!Robot.shooter.getGateLatch()) Robot.shooter.gateLatchReady();
     }
     
     public void retractShooter(){
-        shooterDoubleSolenoid.set(DoubleSolenoid.Value.kReverse);    
+        shooterDoubleSolenoid.set(DoubleSolenoid.Value.kForward);    
         Timer.delay(PNEUMATIC_DELAY_SECONDS);
         shooterDoubleSolenoid.set(DoubleSolenoid.Value.kOff); 
     }
     
     public void releaseTension(){
-        shooterDoubleSolenoid.set(DoubleSolenoid.Value.kForward);     
+        shooterDoubleSolenoid.set(DoubleSolenoid.Value.kReverse);     
         Timer.delay(PNEUMATIC_DELAY_SECONDS);
         shooterDoubleSolenoid.set(DoubleSolenoid.Value.kOff);       
     }
@@ -92,5 +94,29 @@ public class Shooter extends Subsystem {
         return !shooterIn.get();
     }
     
-           
+    public boolean gateLatchExtended(){
+        return !gateLatchOut.get();
+    }       
+    
+    public boolean gateLatchRetracted(){
+        return !gateLatchIn.get();
+    }
+    
+    public boolean isCompressorEnabled() {
+        return compressor.enabled();
+    }    
+    
+    public void disableCompressor(){
+        compressor.stop();
+    }
+    
+    public void enableCompressor(){
+        compressor.start();
+    }
+    
+    public void delayForCount(int count){ 
+        //determine an equation relating counts to seconds
+        for (int i = count; i > 0; i--) Robot.shooter.doNothing();
+    }
+   
 }

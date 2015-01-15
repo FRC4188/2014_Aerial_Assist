@@ -16,6 +16,7 @@ import team4188_2014.RobotMap;
  * @author Owner
  */
 public class RetractShooter extends Command {
+    private boolean hit = false;
     private boolean doneYet = false;
     private Timer timer;
     private double TIME_FINAL = 5.0;
@@ -35,10 +36,14 @@ public class RetractShooter extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         if(Robot.shooter.isExtended()&& Robot.shooter.getGateLatch()) {
-            CorpsLog.log("Teleop", "Releasing Gate Latch...", false, true);
-            Robot.shooter.deployShooter();
-            CorpsLog.log("Teleop", "Retracting Shooter...", false, true);
-            Robot.shooter.retractShooter();
+            if(!hit){
+                CorpsLog.log("Teleop", "Releasing Gate Latch...", false, true);
+                Robot.shooter.deployShooter();
+                CorpsLog.log("Teleop", "Retracting Shooter...", false, true);
+                Robot.shooter.retractShooter();
+                hit = true;
+            }
+            else Robot.shooter.doNothing();
         }
         else if(Robot.shooter.isExtended()&& !Robot.shooter.getGateLatch()) {
             CorpsLog.log("Teleop", "Shooter is ready to shoot... Why did you press retract shooter again?", false, true);
@@ -70,6 +75,7 @@ public class RetractShooter extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+        hit = false;
         doneYet = false;
     }
 

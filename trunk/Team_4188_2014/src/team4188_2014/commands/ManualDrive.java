@@ -18,7 +18,7 @@ import team4188_2014.RobotMap;
  */
 public class  ManualDrive extends Command {
     Joystick pilotStick = Robot.oi.pilotJoystick;
-    private boolean in = false;
+    private boolean open = false;
     public ManualDrive() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -35,21 +35,39 @@ public class  ManualDrive extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         //drive with shooter forward
-        if(!RobotMap.fieldOrientMode){
+        if(!RobotMap.reversedDrive){
             Robot.drivetrain.driveWithJoystick(-pilotStick.getX(), -pilotStick.getY(), pilotStick.getTwist(), pilotStick.getThrottle(), 0);
         }
         
         else {
-            Robot.drivetrain.driveWithJoystick(pilotStick.getX(), pilotStick.getY(), pilotStick.getTwist(), pilotStick.getThrottle(), RobotMap.drivetraingyro.getAngle());
+            Robot.drivetrain.driveWithJoystick(pilotStick.getX(), pilotStick.getY(), pilotStick.getTwist(), pilotStick.getThrottle(), 0);
         }
         
         Robot.drivetrain.getEncoderValues();
+        
         SmartDashboard.putBoolean("Limit Switch", Robot.shooter.getGateLatch());
         SmartDashboard.putBoolean("FieldOrient", RobotMap.fieldOrientMode);
         SmartDashboard.putBoolean("Shooter In", Robot.shooter.isRetracted());
         SmartDashboard.putBoolean("Shooter Out", Robot.shooter.isExtended());
+      //  SmartDashboard.putBoolean("Gate Latch In", Robot.shooter.gateLatchRetracted());
+      //  SmartDashboard.putBoolean("Gate Latch Out", Robot.shooter.gateLatchExtended());
         SmartDashboard.putBoolean("Retriever In", Robot.retriever.isRetracted());
         SmartDashboard.putBoolean("Retriever Out", Robot.retriever.isDeployed());
+        SmartDashboard.putBoolean("Direction", RobotMap.reversedDrive);
+        SmartDashboard.putNumber("Pressure", Robot.drivetrain.getPressureVoltage());
+        
+//        if(!Robot.shooter.isExtended() && !Robot.shooter.isRetracted() && !open){
+//            Robot.shooter.deployShooter();
+//            open = true;
+//        }
+//        
+//        else if(!Robot.shooter.isExtended() && Robot.shooter.isRetracted() && open) {
+//            Robot.shooter.gateLatchReady();
+//            open = false;
+//        }
+//        
+//        else open = false;
+        
     }
     
     // Make this return true when this Command no longer needs to run execute()

@@ -95,14 +95,5 @@ public class Retriever extends Subsystem {
         SmartDashboard.putBoolean("retrieverIn", retrieverIn.get());
         SmartDashboard.putBoolean("retrieverOut", retrieverOut.get());
     }
-         
-    public void delay(){
-        switch(RETRIEVER_STATE){
-            case 1: LOOP_COUNT = 0;
-                RETRIEVER_STATE = 2;
-            case 2: 
-                if(LOOP_COUNT >= 100) retrieverSpike.set(Relay.Value.kForward);
-                else LOOP_COUNT++;
-        }
-    }
+
 }

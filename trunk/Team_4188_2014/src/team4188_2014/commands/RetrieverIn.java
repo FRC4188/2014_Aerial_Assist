@@ -14,9 +14,10 @@ import team4188_2014.RobotMap;
  * @author Owner
  */
 public class RetrieverIn extends Command{
+    private boolean in = false;
     private boolean doneYet = false;
     private Timer timer;
-    private double TIME_FINAL = 2.5;
+    private double TIME_FINAL = 2.0;
 
     public RetrieverIn() {
         // Use requires() here to declare subsystem dependencies
@@ -32,13 +33,15 @@ public class RetrieverIn extends Command{
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-            if(Robot.retriever.isDeployed()) Robot.retriever.retractRetriever();
-            else Robot.retriever.doNothing();
+    
+            Robot.retriever.retractRetriever();
+                    
             
             if(timer.get() < TIME_FINAL)
                 Robot.retriever.retrieve();      
             else {
                 timer.stop();
+                Robot.retriever.doNothing();
                 doneYet = true;
             }
     }
@@ -51,6 +54,7 @@ public class RetrieverIn extends Command{
     // Called once after isFinished returns true
     protected void end() {
         doneYet = false;
+        in = false;
     }
 
     // Called when another command which requires one or more of the same
