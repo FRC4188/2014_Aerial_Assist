@@ -34,8 +34,22 @@ public class Autonomous extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-        addSequential(new Wait(0.1));
-        addSequential(new AutoDrive());
-        addSequential(new RecognizeTarget());
+     //   addSequential(new RetrieverOut());
+        addSequential(new ResetGyro());
+        addSequential(new RetrieverOut());
+        addSequential(new RetrieveBallTime(17));
+        
+        addParallel(new AutoDrive());
+        addSequential(new Wait(2.0));
+        addSequential(new EjectBallTime(5));
+        
+        addParallel(new ShootBall());
+        addSequential(new Wait(2.0));
+        addSequential(new RetrieveBallTime(30));
+        addSequential(new RetrieverIn());
+        addSequential(new ShootBall());
+//        addSequential(new RecognizeTarget());
+        //addSequential(new AutoDriveBackwards());
+        //addParallel(new RecognizeTarget());
     }
 }

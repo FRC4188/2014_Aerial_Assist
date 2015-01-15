@@ -17,6 +17,7 @@ import team4188_2014.RobotMap;
 public class  RetrieveBall extends Command {
 //    private final double SPEED_RETRIEVE = -0.9;
     public RetrieveBall() {
+        
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
 	
@@ -31,6 +32,8 @@ public class  RetrieveBall extends Command {
     protected void execute() {
 //        if(Robot.retriever.isRetracted()) Robot.retriever.deployRetriever();
         Robot.retriever.retrieve();
+            
+        
     }
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {

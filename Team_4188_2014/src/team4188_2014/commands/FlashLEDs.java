@@ -18,6 +18,7 @@ public class FlashLEDs extends Command {
     public FlashLEDs() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+        requires(Robot.lights);
     }
 
     // Called just before this Command runs the first time
@@ -26,11 +27,11 @@ public class FlashLEDs extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        if(Robot.drivetrain.areLEDsOn()){
-            Robot.drivetrain.turnOffLEDs();
+        if(Robot.lights.areLEDsOn()){
+            Robot.lights.turnOffLEDs();
         }
         else{
-            Robot.drivetrain.turnOnLEDs();
+            Robot.lights.turnOnLEDs();
         }
     }
 
